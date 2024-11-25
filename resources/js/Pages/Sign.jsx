@@ -4,12 +4,58 @@ import facebook from "../../../public/assets/logo/facebook.png";
 import Logo from "../components/Logo";
 
 const Sign = () => {
+
+    const [nom, setNom] = useState("");
+    const [prenom, setPrenom] = useState("");
+    const [domaine, setDomaine] = useState("");
+    const [telephone, setTelephone] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState({
         name: "Bénin",
         code: "+229",
         flag: "https://flagcdn.com/w320/bj.png",
     });
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setErrorMessage("");
+
+        try {
+            const response = await axios.post("http://localhost:8000/api/register", {
+                nom: nom,
+                prenom: prenom,
+                domaine: domaine,
+                telephone: telephone,
+                email: email,
+                password: password,
+            });
+            setLoading(false);
+    
+            if (response.status === 200) {
+                // Succès : Traitez les données renvoyées (par exemple, un token JWT)
+                console.log("Connexion réussie :", response.data);
+                // Vous pouvez rediriger l'utilisateur ou sauvegarder le token
+                window.location.href = "/";
+    
+            } else {
+                // Gérez les cas où la connexion échoue
+                setErrorMessage("Email ou mot de passe incorrect.");
+                console.error("Erreur de connexion :", response.data);
+            }
+        } catch (error) {
+            // Gérez les erreurs réseau ou serveur
+            setLoading(false);
+            setErrorMessage("Une erreur est survenue. Réessayez plus tard.");
+            console.error("Erreur réseau ou serveur :", error.message);
+        }
+
+    }
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -63,7 +109,7 @@ const Sign = () => {
                 Créez votre compte
             </h2>
 
-            <form>
+            <form onSubmit={handleRegister}>
                 <div className="flex flex-row gap-4">
                     <div className="mb-4 w-1/2">
                         <label className="block text-sm font-medium text-gray-700">
@@ -71,6 +117,8 @@ const Sign = () => {
                         </label>
                         <input
                             type="nom"
+                            value={nom}
+                            onChange={(e) => setNom(e.target.value)}
                             placeholder="Nom"
                             className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                         />
@@ -81,6 +129,8 @@ const Sign = () => {
                         </label>
                         <input
                             type="prenom"
+                            value={prenom}
+                            onChange={(e) => setPrenom(e.target.value)}
                             placeholder="Prénoms"
                             className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                         />
@@ -93,6 +143,8 @@ const Sign = () => {
                     </label>
                     <input
                         type="domaine"
+                        value={domaine}
+                        onChange={(e) => setDomaine(e.target.value)}
                         placeholder="Domaine"
                         className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                     />
@@ -142,6 +194,8 @@ const Sign = () => {
                     </div>
                     <input
                         type="tel"
+                        value={telephone}
+                        onChange={(e) => setTelephone(e.target.value)}
                         placeholder="90 01 12 34"
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                     />
@@ -153,6 +207,8 @@ const Sign = () => {
                     </label>
                     <input
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
                         className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                     />
@@ -164,6 +220,8 @@ const Sign = () => {
                     </label>
                     <input
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="Mot de passe"
                         className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-black focus:border-black"
                     />
@@ -184,10 +242,16 @@ const Sign = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-black focus:outline-none"
+                    className={`w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-black focus:outline-none${
+                        loading ? "bg-gray-500" : "bg-primary"
+                    }`}
                 >
-                    Créer un compte gratuitement
+                    {loading ? "Chargement..." : "Créer un compte gratuitement"}
                 </button>
+
+                {errorMessage && (
+                    <p className="mt-2 text-red-500 text-sm">{errorMessage}</p>
+                )}
 
                 <div className="flex items-center gap-2 mt-4">
                     <p className="text-sm text-gray-600">

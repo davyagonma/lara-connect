@@ -2,11 +2,56 @@ import React, { useState } from "react";
 import google from "../../../public/assets/logo/google.png";
 import facebook from "../../../public/assets/logo/facebook.png";
 import Logo from "../components/Logo";
+import axios from "axios"; // Si vous préférez axios
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const Login = () => {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
+    // const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+
+        e.preventDefault(); // Empêcher le rechargement de la page
+        setLoading(true);
+        setErrorMessage("");
+    
+    
+    
+        try {
+            const response = await axios.post("http://localhost:8000/api/login", {
+                email: email,
+                password: password,
+            });
+            setLoading(false);
+    
+            if (response.status === 200) {
+                // Succès : Traitez les données renvoyées (par exemple, un token JWT)
+                console.log("Connexion réussie :", response.data);
+                // Vous pouvez rediriger l'utilisateur ou sauvegarder le token
+                window.location.href = "/";
+    
+            } else {
+                // Gérez les cas où la connexion échoue
+                setErrorMessage("Email ou mot de passe incorrect.");
+                console.error("Erreur de connexion :", response.data);
+            }
+        } catch (error) {
+            // Gérez les erreurs réseau ou serveur
+            setLoading(false);
+            setErrorMessage("Une erreur est survenue. Réessayez plus tard.");
+            console.error("Erreur réseau ou serveur :", error.message);
+        }
+    };
+
+    
     return (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-72 sm:max-w-md mx-auto my-10 sm:my-0 bg-white shadow-lg rounded-lg p-6 w-full">
             <div className="flex justify-center">
@@ -17,7 +62,7 @@ const Login = () => {
                 Connectez-vous
             </h2>
 
-            <form>
+            <form onSubmit={handleLogin}>
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
                         Email
@@ -46,10 +91,17 @@ const Login = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-black focus:outline-none"
+                    disabled={loading} // Désactive le bouton en cas de chargement
+                    className={`w-full py-2 px-4 rounded-md text-white ${
+                        loading ? "bg-gray-500" : "bg-primary"
+                    }`}
                 >
-                    Se connecter
+                    {loading ? "Chargement..." : "Se connecter"}
                 </button>
+
+                {errorMessage && (
+                    <p className="mt-2 text-red-500 text-sm">{errorMessage}</p>
+                )}
 
                 <div className="flex flex-col sm:flex-row items-center gap-2 justify-between mt-4">
                     <a
@@ -111,9 +163,16 @@ const Login = () => {
                     </a>
                     .
                 </p>
+
             </form>
+
         </div>
     );
 };
 
 export default Login;
+
+
+
+//////////////////
+
