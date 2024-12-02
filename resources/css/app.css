@@ -2,18 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #061e36;
+    background-color: #dbdbdb;
     border-radius: 25px;
     cursor: pointer;
 }
-
 ::selection {
     background-color: #061e36;
     color: white;
+}
+
+body {
+    @apply bg-gray-100;
+}
+
+body.dark {
+    @apply bg-gray-900;
 }
