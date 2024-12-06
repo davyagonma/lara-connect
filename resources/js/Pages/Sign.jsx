@@ -142,7 +142,7 @@ const Sign = () => {
                     </div>
                     <input
                         type="tel"
-                        placeholder="90 01 12 34"
+                        placeholder="01 90 01 12 34"
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-black focus:border-black"
                     />
                 </div>

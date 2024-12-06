@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import EditProfileForm from "../components/EditProfileForm";
 import Sidebar from "../components/Sidebar";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const EditProfilePage = () => {
+    const {darkMode} = useDarkMode()
     const [user, setUser] = useState({
         name: "John Doe",
         email: "john.doe@example.com",

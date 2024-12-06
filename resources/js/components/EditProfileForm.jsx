@@ -17,35 +17,37 @@ const EditProfileForm = ({ user, onSave }) => {
         <form
             onSubmit={handleSubmit}
             className={`${
-                darkMode ? "text-white bg-gray-800" : "text-black bg-white"
+                darkMode ? "text-black bg-gray-800" : "text-black bg-white"
             } flex flex-col gap-4 p-6 rounded-lg shadow-md`}
         >
-            <label className="flex flex-col">
-                Nom :
+            <div className="flex flex-col">
+                <label className="flex flex-col">Nom :</label>
                 <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="border p-2 rounded"
-                />
-            </label>
-            <label className="flex flex-col">
-                Email :
+                />{" "}
+            </div>
+
+            <div className="flex flex-col">
+                <label className="flex flex-col">Email :</label>
                 <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="border p-2 rounded"
                 />
-            </label>
-            <label className="flex flex-col">
-                Bio :
+            </div>
+
+            <div className="flex flex-col">
+                <label>Bio :</label>
                 <textarea
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     className="border p-2 rounded"
                 />
-            </label>
+            </div>
             <button
                 type="submit"
                 className="px-4 py-2 bg-primary text-white rounded"
