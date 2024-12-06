@@ -21,7 +21,8 @@ const EditProfileForm = ({ user, onSave }) => {
             } flex flex-col gap-4 p-6 rounded-lg shadow-md`}
         >
             <div className="flex flex-col">
-                <label className="flex flex-col">Nom :</label>
+                <label className={`${
+                darkMode ? "text-white" : "text-black bg-white"}`}>Nom :</label>
                 <input
                     type="text"
                     value={name}
@@ -31,7 +32,8 @@ const EditProfileForm = ({ user, onSave }) => {
             </div>
 
             <div className="flex flex-col">
-                <label className="flex flex-col">Email :</label>
+                <label className={`${
+                darkMode ? "text-white" : "text-black bg-white"}`}>Email :</label>
                 <input
                     type="email"
                     value={email}
@@ -41,7 +43,8 @@ const EditProfileForm = ({ user, onSave }) => {
             </div>
 
             <div className="flex flex-col">
-                <label>Bio :</label>
+                <label className={`${
+                    darkMode ? "text-white" : "text-black bg-white"}`}>Bio :</label>
                 <textarea
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
